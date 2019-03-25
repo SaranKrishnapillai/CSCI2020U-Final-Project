@@ -25,12 +25,11 @@ public class Game_Content {
 	private static final String ENEMY_IMAGE = "Tie fighter.png";
 	private static final String COIN_IMAGE = "JSR.jpg";
 	private static final String VERTICAL_MISSILE_IMAGE = "VerticalMissile.png";
-	
+
 	private Image missileImage, asteroidImage;
 	private ImageView bg1, bg2; 
 	private Node hero; 
-	private Node enemy1, enemy2, enemy3, enemy4, enemy5;
-	private Node asteroid1, asteroid2;
+
 	private ArrayList<Node> missiles = new ArrayList<Node>();
 	private ArrayList<Node> villains = new ArrayList<Node>();
 	private ArrayList<Node> asteroids = new ArrayList<Node>();
@@ -42,7 +41,6 @@ public class Game_Content {
 	private ArrayList<Node> enemyMissiles3 = new ArrayList<Node>();
 	private ArrayList<Node> enemyMissiles4 = new ArrayList<Node>();
 	private ArrayList<Node> enemyMissiles5 = new ArrayList<Node>();
-	private Node coin1, coin2;
 
 	public static Group board; 
 	Label scoreText;
@@ -50,7 +48,7 @@ public class Game_Content {
 	boolean goUp, goDown, goRight, goLeft; 
 	boolean shooting; 
 	AnimationTimer timer; 
-	private int numEnemies = 1;
+	private int numEnemies = 5;
 
 	public Game_Content(){
 		board = new Group();
@@ -70,18 +68,10 @@ public class Game_Content {
 		bg1.relocate(0, 0);
 		bg2.relocate(800, 0);
 
-		coin1 = new ImageView(new Image(COIN_IMAGE));
-		coin2 = new ImageView(new Image(COIN_IMAGE));
-
 
 		hero = new ImageView(new Image("ship.png"));
 		hero.relocate(0, 0);
 
-		enemy1 = new ImageView(new Image(ENEMY_IMAGE));
-		enemy2 = new ImageView(new Image(ENEMY_IMAGE));
-		enemy3 = new ImageView(new Image(ENEMY_IMAGE));
-		enemy4 = new ImageView(new Image(ENEMY_IMAGE));
-		enemy5 = new ImageView(new Image(ENEMY_IMAGE));
 
 		scoreText = new Label("Scores: 0");
 		scoreText.relocate(170, 10);
@@ -95,10 +85,10 @@ public class Game_Content {
 		board.getChildren().addAll(bg1,bg2,hero,scoreText,help);
 
 	}
-
+	int enemyCounter = 0; 
 	public void animate() {
 		timer = new AnimationTimer() {
-			int enemyCounter = 0; 
+
 			Random random = new Random(); 
 
 			@Override
@@ -111,10 +101,9 @@ public class Game_Content {
 				if(goDown) dy+=4;
 				if(goRight) dx +=4; 
 				if(goLeft) dx-=4;
-				//System.out.println(asteroidCounter % modifier==0);
+
 				if(random.nextInt(100) == 1) {
 					createAsteroids();
-					//bombardment();
 				}
 
 				if(random.nextInt(100) == 1) {
@@ -127,8 +116,7 @@ public class Game_Content {
 					enemyCounter++;
 				}
 
-				
-				//System.out.println(asteroidCounter % modifier == 0);
+
 
 
 				moveHeroTo(hero.getLayoutX() + dx, hero.getLayoutY() + dy);
@@ -145,7 +133,7 @@ public class Game_Content {
 
 		};
 	}
-	
+
 	public void createCoin() {
 		ImageView aCoin = new ImageView(COIN_IMAGE);
 		Node newCoin = aCoin; 
@@ -177,51 +165,238 @@ public class Game_Content {
 		newEnemy.relocate(W, (int)(Math.random()*(H-50)+10));
 		enemies.add(newEnemy);
 		board.getChildren().add(newEnemy);
-		
-		
+
 	}
 
+
+
 	public void moveEnemies(int px, int py) {
+
+		if(enemyCounter >= 1) {
+			moveEnemies1(px,py);
+		}
+
+		if(enemyCounter >= 2) {
+			moveEnemies2(px,py);
+		}
+
+		if(enemyCounter >= 3) {
+			moveEnemies3(px,py);
+		}
+
+		if(enemyCounter >= 4) {
+			moveEnemies4(px,py);
+		}
+
+		if(enemyCounter >= 5) {
+			moveEnemies5(px,py);
+		}
+	}
+
+	public void moveEnemies1(int px, int py) {
 		int dx = 0;
 		int dy = 0; 
 
-		for(int i = 0; i < enemies.size(); i++) {
-			if(px > enemies.get(i).getLayoutX()){
+		if(enemyCounter >= 2) {
+			if(px > enemies.get(0).getLayoutX()){
 				dx = +2;
 			}
-			if(px < enemies.get(i).getLayoutX()){ 
+			if(px < enemies.get(0).getLayoutX()){ 
 				dx = -2;
 			}	
-			if(py < enemies.get(i).getLayoutY()){
+			if(py < enemies.get(0).getLayoutY()){
 				dy = -2;
 			}
-			if(py > enemies.get(i).getLayoutY()){
+			if(py > enemies.get(0).getLayoutY()){
 				dy = 2;
 			}
 
-			enemies.get(i).setLayoutX(enemies.get(i).getLayoutX() + dx);
-			enemies.get(i).setLayoutY(enemies.get(i).getLayoutY() + dy);
+			enemies.get(0).setLayoutX(enemies.get(0).getLayoutX() + dx);
+			enemies.get(0).setLayoutY(enemies.get(0).getLayoutY() + dy);
+		}
 
+
+	}
+
+	public void moveEnemies2(int px, int py) {
+		int dx = 0;
+		int dy = 0; 
+
+		if(px > enemies.get(1).getLayoutX()){
+			dx = +2;
+		}
+		if(px < enemies.get(1).getLayoutX()){ 
+			dx = -2;
+		}	
+		if(py < enemies.get(1).getLayoutY()){
+			dy = -2;
+		}
+		if(py > enemies.get(1).getLayoutY()){
+			dy = 2;
+		}
+
+		enemies.get(1).setLayoutX(enemies.get(1).getLayoutX() + dx);
+		enemies.get(1).setLayoutY(enemies.get(1).getLayoutY() + dy);
+
+		if(enemies.get(1).getLayoutX() < 2*W/3) {
+			enemies.get(1).setLayoutX(2*W/3);
+		}
+
+	}
+
+
+
+	public void moveEnemies3(int px, int py) {
+		int dx = 0;
+		int dy = 0; 
+
+
+
+		if(enemyCounter >= 3) {
+			if(px > enemies.get(2).getLayoutX()){
+				dx = +2;
+			}
+			if(px < enemies.get(2).getLayoutX()){ 
+				dx = -2;
+			}	
+			if(py < enemies.get(2).getLayoutY()){
+				dy = -2;
+			}
+			if(py > enemies.get(2).getLayoutY()){
+				dy = 2;
+			}
+
+			enemies.get(2).setLayoutX(enemies.get(2).getLayoutX() + dx);
+			enemies.get(2).setLayoutY(enemies.get(2).getLayoutY() + dy);
+
+			if(enemies.get(2).getLayoutX() < 1*W/3) {
+				enemies.get(2).setLayoutX(1*W/3);
+			}
 
 		}
 
 	}
+
+	int fodx = -2;
+	int fody = 2; 
+
+	public void moveEnemies4(int px, int py) {
+
+
+		if(enemyCounter >= 4) {
+
+			if (enemies.get(3).getLayoutX() < 1) {
+				enemies.get(3).setLayoutX(1);
+				fodx = 2;
+			}
+
+			if(enemies.get(3).getLayoutY() < 1) {
+				enemies.get(3).setLayoutY(1);
+				fody = 2;
+			}
+
+			if(enemies.get(3).getLayoutX() > W) {
+				enemies.get(3).setLayoutX(W);
+				fodx = -2;
+			}
+
+			if(enemies.get(3).getLayoutY() > H) {
+				enemies.get(3).setLayoutY(H);
+				fody = -2;
+			}			
+
+			enemies.get(3).setLayoutX(enemies.get(3).getLayoutX() + fodx);
+			enemies.get(3).setLayoutY(enemies.get(3).getLayoutY() + fody);
+
+		}
+
+
+	}
+
+
+	int fidx = -2; 
+	int fidy = 2;
+	public void moveEnemies5(int px, int py) {
+
+		if(enemyCounter >= 5) {
+
+			if (enemies.get(4).getLayoutX() < 1) {
+				enemies.get(4).setLayoutX(1);
+				fidx = 2;
+			}
+
+			if(enemies.get(4).getLayoutY() < 1) {
+				enemies.get(4).setLayoutY(1);
+				fidy = 2;
+			}
+
+			if(enemies.get(4).getLayoutX() > W) {
+				enemies.get(4).setLayoutX(W);
+				fidx = -2;
+			}
+
+			if(enemies.get(4).getLayoutY() > H) {
+				enemies.get(4).setLayoutY(H);
+				fidy = -2;
+			}			
+
+			enemies.get(4).setLayoutX(enemies.get(4).getLayoutX() + fidx);
+			enemies.get(4).setLayoutY(enemies.get(4).getLayoutY() + fidy);
+
+		}
+
+	}
+
+
 
 	public void createEnemyMissile() {
 		ImageView aMissile = new ImageView(MISSILE_IMAGE);
+		ImageView bMissile = new ImageView(MISSILE_IMAGE);
+		ImageView cMissile = new ImageView(MISSILE_IMAGE);
+		ImageView dMissile = new ImageView(MISSILE_IMAGE);
+		ImageView eMissile = new ImageView(MISSILE_IMAGE);
 		Node newMissile = aMissile;
-
+		Node newMissile2 = bMissile; 
+		Node newMissile3 = cMissile;
+		Node newMissile4 = dMissile;
+		Node newMissile5 = eMissile; 
 		// There is only a maximum of 5 enemies. 
 		// Each enemy will have separate missile array list.
 		// add distinct missiles to avoid earlier error. 
-		
-		for(int i = 0; i < enemies.size(); i++) {
-			newMissile.relocate(enemies.get(i).getLayoutX() + enemies.get(i).getBoundsInLocal().getWidth(),enemies.get(i).getLayoutY());
-			enemyMissiles.add(newMissile);
-			board.getChildren().add(newMissile);
-			break;
+		newMissile.relocate(enemies.get(0).getLayoutX() + enemies.get(0).getBoundsInLocal().getWidth(),enemies.get(0).getLayoutY());
+		enemyMissiles.add(newMissile);
+		board.getChildren().add(newMissile);
+
+
+		if(enemyCounter >= 2) {
+			newMissile2.relocate(enemies.get(1).getLayoutX() + enemies.get(1).getBoundsInLocal().getWidth(), enemies.get(1).getLayoutY());
+			enemyMissiles2.add(newMissile2);
+			board.getChildren().add(newMissile2);
 		}
+
+		if(enemyCounter >= 3) {
+			newMissile3.relocate(enemies.get(2).getLayoutX() + enemies.get(2).getBoundsInLocal().getWidth(), enemies.get(2).getLayoutY());
+			enemyMissiles3.add(newMissile3);
+			board.getChildren().add(newMissile3);
+		}
+
+		if(enemyCounter >= 4) {
+			newMissile4.relocate(enemies.get(3).getLayoutX() + enemies.get(3).getBoundsInLocal().getWidth(), enemies.get(3).getLayoutY());
+			enemyMissiles4.add(newMissile4);
+			board.getChildren().add(newMissile4);
+		}
+
+		if(enemyCounter >= 5) {
+			newMissile4.relocate(enemies.get(4).getLayoutX() + enemies.get(4).getBoundsInLocal().getWidth(), enemies.get(4).getLayoutY());
+			enemyMissiles5.add(newMissile5);
+			board.getChildren().add(newMissile5);
+		}
+
 	}
+
+
+
+
 
 	public void enemyFire() {
 		for(int i = 0; i < enemyMissiles.size(); i++) {
@@ -230,6 +405,36 @@ public class Game_Content {
 				enemyMissiles.remove(i);
 			}
 		}
+
+		for(int i = 0; i < enemyMissiles2.size(); i++) {
+			enemyMissiles2.get(i).setLayoutX(enemyMissiles2.get(i).getLayoutX() -10);
+			if(enemyMissiles2.get(i).getLayoutX() > W) {
+				enemyMissiles2.remove(i);
+			}
+		}
+
+		for(int i = 0; i < enemyMissiles3.size(); i++) {
+			enemyMissiles3.get(i).setLayoutX(enemyMissiles3.get(i).getLayoutX() -10);
+			if(enemyMissiles3.get(i).getLayoutX() > W) {
+				enemyMissiles3.remove(i);
+			}
+		}
+
+		for(int i = 0; i < enemyMissiles4.size(); i++) {
+			enemyMissiles4.get(i).setLayoutX(enemyMissiles4.get(i).getLayoutX() -10);
+			if(enemyMissiles4.get(i).getLayoutX() > W) {
+				enemyMissiles4.remove(i);
+			}
+		}
+
+		for(int i = 0; i < enemyMissiles5.size(); i++) {
+			enemyMissiles5.get(i).setLayoutX(enemyMissiles5.get(i).getLayoutX() -10);
+			if(enemyMissiles5.get(i).getLayoutX() > W) {
+				enemyMissiles5.remove(i);
+			}
+		}
+
+
 	}
 
 	public void createAsteroids() {
@@ -272,7 +477,7 @@ public class Game_Content {
 	public void firingPattern() {
 		for(int i = 0; i < enemies.size(); i++) {
 			int FP = (int)(Math.random()*100)+1;
-			if(FP == 1) {
+			if(FP <= 5) {
 				createEnemyMissile();
 			}
 		}
@@ -438,6 +643,10 @@ public class Game_Content {
 
 	public Parent getRoot() {
 		return board; 
+	}
+
+	public int getNumEnemies() {
+		return numEnemies;
 	}
 
 }
