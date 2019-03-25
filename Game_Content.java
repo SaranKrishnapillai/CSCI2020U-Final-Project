@@ -1,3 +1,6 @@
+package sample;
+
+import java.io.File;
 import java.util.ArrayList;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -9,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
