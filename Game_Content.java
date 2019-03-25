@@ -48,7 +48,7 @@ public class Game_Content {
 	boolean goUp, goDown, goRight, goLeft; 
 	boolean shooting; 
 	AnimationTimer timer; 
-	private int numEnemies = 5;
+	private int numEnemies = 3;
 
 	public Game_Content(){
 		board = new Group();
@@ -70,7 +70,7 @@ public class Game_Content {
 
 
 		hero = new ImageView(new Image("ship.png"));
-		hero.relocate(0, 0);
+		hero.relocate(250, 250);
 
 
 		scoreText = new Label("Scores: 0");
@@ -132,6 +132,7 @@ public class Game_Content {
 			}
 
 		};
+		timer.start(); 
 	}
 
 	public void createCoin() {
@@ -559,6 +560,33 @@ public class Game_Content {
 
 	public void checkHit() {
 
+
+		for(int i = 0; i < bMissiles.size(); i++) {
+			for(int j = 0; j < asteroids.size(); j++) {
+				if(bMissiles.get(i).getBoundsInParent().intersects(asteroids.get(j).getBoundsInParent())) {
+					board.getChildren().removeAll(bMissiles.get(i), asteroids.get(j));
+					asteroids.remove(j);
+					bMissiles.remove(i);
+					score++; 
+					scoreText.setText("Score: " + score);
+				}
+			}
+		}
+
+		for(int i = 0; i < bMissiles.size(); i++) {
+			for(int j = 0; j < enemies.size(); j++) {
+				if(bMissiles.get(i).getBoundsInParent().intersects(enemies.get(j).getBoundsInParent())) {
+					board.getChildren().removeAll(enemies.get(j), bMissiles.get(i));
+					bMissiles.remove(i);
+					enemies.remove(j);
+					score++; 
+					enemyCounter--;
+					scoreText.setText("Score: " + score);
+					break; 
+				}
+			}
+		}
+
 		for(int j = 0; j < coins.size(); j++) {
 			if(hero.getBoundsInParent().intersects(coins.get(j).getBoundsInParent())) {
 				board.getChildren().removeAll(coins.get(j));
@@ -569,10 +597,45 @@ public class Game_Content {
 
 		for(int j = 0; j < asteroids.size(); j++) {
 			if(hero.getBoundsInParent().intersects(asteroids.get(j).getBoundsInParent())){
-
 				gameOver();
 			}
 		}
+
+
+		for(int j = 0; j < enemyMissiles.size(); j++) {
+			if(enemyMissiles.get(j).getBoundsInParent().intersects(hero.getBoundsInParent())) {
+				gameOver();
+			}
+		}
+
+
+		for(int j = 0; j < enemyMissiles2.size(); j++) {
+			if(hero.getBoundsInParent().intersects(enemyMissiles2.get(j).getBoundsInParent())) {
+				gameOver();
+			}
+		}
+
+		for(int j = 0; j < enemyMissiles3.size(); j++) {
+			if(hero.getBoundsInParent().intersects(enemyMissiles3.get(j).getBoundsInParent())) {
+				gameOver();
+			}
+		}
+
+		if(numEnemies >= 4) {
+			for(int j = 0; j < enemyMissiles4.size(); j++) {
+				if(hero.getBoundsInParent().intersects(enemyMissiles4.get(j).getBoundsInParent())) {
+					gameOver();
+				}
+			}
+		}
+		if(numEnemies >= 5) {
+			for(int j = 0; j < enemyMissiles5.size(); j++) {
+				if(hero.getBoundsInParent().intersects(enemyMissiles5.get(j).getBoundsInParent())) {
+					gameOver();
+				}
+			}
+		}
+
 
 		for(int i = 0; i < missiles.size(); i++) {
 			for(int j = 0; j < villains.size(); j++) {
@@ -599,12 +662,22 @@ public class Game_Content {
 
 			}
 
+		}
 
-
+		for(int i = 0; i < missiles.size(); i++) {
+			for(int j = 0; j < enemies.size(); j++) {
+				if(missiles.get(i).getBoundsInParent().intersects(enemies.get(j).getBoundsInParent())) {
+					board.getChildren().removeAll(enemies.get(j), missiles.get(i));
+					missiles.remove(i);
+					enemies.remove(j);
+					score++; 
+					enemyCounter--;
+					scoreText.setText("Score: " + score);
+					break; 
+				}
+			}
 		}
 	}
-
-
 	private void helpScreen() {
 		timer.stop();
 
