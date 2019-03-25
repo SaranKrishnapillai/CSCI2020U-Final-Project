@@ -17,39 +17,19 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.control.ListView;
-
 import java.io.File;
 
-class Score
-{
-    String name;
-    int score;
-    public Score(String name,int score){
-        this.name = name;
-        this.score = score;
-    }
 
-    public int getScore() {
-        return score;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-}
 
 public class Main extends Application {
 
+    Stage window;
+    Scene scene1,scene2;
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        window = primaryStage;
+        Game_Content g = new Game_Content();
         Pane pane = new Pane();
 
         Label lbl = new Label("Game Title");
@@ -65,6 +45,10 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Starts Game");
+                window.setScene(scene2);
+                scene2.setOnKeyPressed(e -> g.keyPressed(e));
+                scene2.setOnKeyReleased(e -> g.keyReleased(e));
+
             }
         });
         button.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -125,7 +109,7 @@ public class Main extends Application {
         button3.setTranslateX(125);
         button3.setTranslateY(385);
 
-        String path = "C:/Users/Saran Sanchez/IdeaProjects/javathingy/src/The Imperial March.mp3";
+        String path = "The Imperial March.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         button3.setOnAction(event -> {
@@ -198,9 +182,11 @@ public class Main extends Application {
         pane.getChildren().add(img);
         pane.getChildren().add(lbl);
         pane.getChildren().addAll(button,button2,txt,button3,button4,list1);
-        primaryStage.setTitle("Main Menu");
-        primaryStage.setScene(new Scene(pane, 600, 500));
-        primaryStage.show();
+        scene2 = new Scene(g.getRoot(),800,600);
+        scene1 = new Scene(pane,600,500);
+        window.setTitle("Main Menu");
+        window.setScene(scene1);
+        window.show();
 
     }
 
@@ -224,3 +210,4 @@ public class Main extends Application {
         launch(args);
     }
 }
+
